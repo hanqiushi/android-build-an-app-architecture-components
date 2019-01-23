@@ -58,7 +58,7 @@ public class WeatherNetworkDataSource {
     private final MutableLiveData<WeatherEntry[]> mDownloadedWeatherForecasts;
     private final AppExecutors mExecutors;
 
-    private WeatherNetworkDataSource(Context context, AppExecutors executors) {
+    public WeatherNetworkDataSource(Context context, AppExecutors executors) {
         mContext = context;
         mExecutors = executors;
         mDownloadedWeatherForecasts = new MutableLiveData<WeatherEntry[]>();

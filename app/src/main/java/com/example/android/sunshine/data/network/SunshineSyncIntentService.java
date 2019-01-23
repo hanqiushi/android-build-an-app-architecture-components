@@ -21,6 +21,8 @@ import android.util.Log;
 
 import com.example.android.sunshine.utilities.InjectorUtils;
 
+import javax.inject.Inject;
+
 /**
  * An {@link IntentService} subclass for immediately scheduling a sync with the server off of the
  * main thread. This is necessary because {@link com.firebase.jobdispatcher.FirebaseJobDispatcher}
@@ -28,6 +30,10 @@ import com.example.android.sunshine.utilities.InjectorUtils;
  * screen.
  */
 public class SunshineSyncIntentService extends IntentService {
+
+    @Inject
+    WeatherNetworkDataSource networkDataSource;
+
     private static final String LOG_TAG = SunshineSyncIntentService.class.getSimpleName();
 
     public SunshineSyncIntentService() {
@@ -37,8 +43,8 @@ public class SunshineSyncIntentService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         Log.d(LOG_TAG, "Intent service started");
-        WeatherNetworkDataSource networkDataSource =
-                InjectorUtils.provideNetworkDataSource(this.getApplicationContext());
+        /*WeatherNetworkDataSource networkDataSource =
+                InjectorUtils.provideNetworkDataSource(this.getApplicationContext());*/
         networkDataSource.fetchWeather();
     }
 }

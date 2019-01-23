@@ -24,11 +24,15 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ProgressBar;
 
+import com.example.android.sunshine.App;
 import com.example.android.sunshine.R;
+import com.example.android.sunshine.data.SunshineRepository;
 import com.example.android.sunshine.ui.detail.DetailActivity;
 import com.example.android.sunshine.utilities.InjectorUtils;
 
 import java.util.Date;
+
+import javax.inject.Inject;
 
 
 /**
@@ -36,6 +40,9 @@ import java.util.Date;
  */
 public class MainActivity extends LifecycleActivity implements
         ForecastAdapter.ForecastAdapterOnItemClickHandler {
+
+    @Inject
+    SunshineRepository mRepository;
 
     private ForecastAdapter mForecastAdapter;
     private RecyclerView mRecyclerView;
@@ -48,6 +55,7 @@ public class MainActivity extends LifecycleActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forecast);
 
+        App.getInstance().getComponent().inject(this);
         /*
          * Using findViewById, we get a reference to our RecyclerView from xml. This allows us to
          * do things like set the adapter of the RecyclerView and toggle the visibility.
@@ -103,7 +111,7 @@ public class MainActivity extends LifecycleActivity implements
 
         /* Setting the adapter attaches it to the RecyclerView in our layout. */
         mRecyclerView.setAdapter(mForecastAdapter);
-        MainViewModelFactory factory = InjectorUtils.provideMainActivityViewModelFactory(this.getApplicationContext());
+        MainViewModelFactory factory = new MainViewModelFactory(mRepository);/*InjectorUtils.provideMainActivityViewModelFactory(this.getApplicationContext());*/
         mViewModel = ViewModelProviders.of(this, factory).get(MainActivityViewModel.class);
 
         mViewModel.getForecast().observe(this, weatherEntries -> {

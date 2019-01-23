@@ -21,6 +21,7 @@ import android.util.Log;
 
 import com.example.android.sunshine.AppExecutors;
 import com.example.android.sunshine.data.database.ListWeatherEntry;
+import com.example.android.sunshine.data.database.SunshineDatabase;
 import com.example.android.sunshine.data.database.WeatherDao;
 import com.example.android.sunshine.data.database.WeatherEntry;
 import com.example.android.sunshine.data.network.WeatherNetworkDataSource;
@@ -29,10 +30,14 @@ import com.example.android.sunshine.utilities.SunshineDateUtils;
 import java.util.Date;
 import java.util.List;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 /**
  * Handles data operations in Sunshine. Acts as a mediator between {@link WeatherNetworkDataSource}
  * and {@link WeatherDao}
  */
+@Singleton
 public class SunshineRepository {
     private static final String LOG_TAG = SunshineRepository.class.getSimpleName();
 
@@ -44,9 +49,10 @@ public class SunshineRepository {
     private final AppExecutors mExecutors;
     private boolean mInitialized = false;
 
-    private SunshineRepository(WeatherDao weatherDao,
-                               WeatherNetworkDataSource weatherNetworkDataSource,
-                               AppExecutors executors) {
+    @Inject
+    public SunshineRepository(WeatherDao weatherDao,
+                              WeatherNetworkDataSource weatherNetworkDataSource,
+                              AppExecutors executors) {
         mWeatherDao = weatherDao;
         mWeatherNetworkDataSource = weatherNetworkDataSource;
         mExecutors = executors;

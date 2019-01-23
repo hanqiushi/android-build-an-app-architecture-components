@@ -29,12 +29,12 @@ import android.util.Log;
  */
 
 // List of the entry classes and associated TypeConverters
-@Database(entities = {WeatherEntry.class}, version = 1)
+@Database(entities = {WeatherEntry.class}, version = 1, exportSchema = false)
 @TypeConverters(DateConverter.class)
 public abstract class SunshineDatabase extends RoomDatabase {
 
     private static final String LOG_TAG = SunshineDatabase.class.getSimpleName();
-    private static final String DATABASE_NAME = "weather";
+    public static final String DATABASE_NAME = "weather";
 
     // For Singleton instantiation
     private static final Object LOCK = new Object();

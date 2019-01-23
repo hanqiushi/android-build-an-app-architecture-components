@@ -20,7 +20,9 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 
+import com.example.android.sunshine.App;
 import com.example.android.sunshine.R;
+import com.example.android.sunshine.data.SunshineRepository;
 import com.example.android.sunshine.data.database.WeatherEntry;
 import com.example.android.sunshine.databinding.ActivityDetailBinding;
 import com.example.android.sunshine.utilities.InjectorUtils;
@@ -29,6 +31,8 @@ import com.example.android.sunshine.utilities.SunshineWeatherUtils;
 
 import java.util.Date;
 
+import javax.inject.Inject;
+
 /**
  * Displays single day's forecast
  */
@@ -36,6 +40,8 @@ public class DetailActivity extends LifecycleActivity {
 
     public static final String WEATHER_ID_EXTRA = "WEATHER_ID_EXTRA";
 
+    @Inject
+    SunshineRepository mRepository;
     /*
      * This field is used for data binding. Normally, we would have to call findViewById many
      * times to get references to the Views in this Activity. With data binding however, we only
@@ -50,12 +56,14 @@ public class DetailActivity extends LifecycleActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        App.getInstance().getComponent().inject(this);
+
         mDetailBinding = DataBindingUtil.setContentView(this, R.layout.activity_detail);
         long timestamp = getIntent().getLongExtra(WEATHER_ID_EXTRA, -1);
         Date date = new Date(timestamp);
 
         // Get the ViewModel from the factory
-        DetailViewModelFactory factory = InjectorUtils.provideDetailViewModelFactory(this.getApplicationContext(), date);
+        DetailViewModelFactory factory = new DetailViewModelFactory(mRepository, date);//InjectorUtils.provideDetailViewModelFactory(this.getApplicationContext(), date);
         mViewModel = ViewModelProviders.of(this, factory).get(DetailActivityViewModel.class);
 
         // Observers changes in the WeatherEntry with the id mId

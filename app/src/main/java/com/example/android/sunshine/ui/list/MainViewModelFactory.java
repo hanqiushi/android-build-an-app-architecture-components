@@ -21,13 +21,16 @@ import android.arch.lifecycle.ViewModelProvider;
 
 import com.example.android.sunshine.data.SunshineRepository;
 
+import javax.inject.Inject;
+
 /**
  * Factory method that allows us to create a ViewModel with a constructor that takes a
  * {@link SunshineRepository}
  */
 public class MainViewModelFactory extends ViewModelProvider.NewInstanceFactory {
 
-    private final SunshineRepository mRepository;
+    @Inject
+    public SunshineRepository mRepository;
 
     public MainViewModelFactory(SunshineRepository repository) {
         this.mRepository = repository;

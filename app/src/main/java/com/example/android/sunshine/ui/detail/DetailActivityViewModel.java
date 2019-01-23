@@ -24,6 +24,8 @@ import com.example.android.sunshine.data.database.WeatherEntry;
 
 import java.util.Date;
 
+import javax.inject.Inject;
+
 /**
  * {@link ViewModel} for {@link DetailActivity}
  */
@@ -34,7 +36,8 @@ class DetailActivityViewModel extends ViewModel {
 
     // Date for the weather forecast
     private final Date mDate;
-    private final SunshineRepository mRepository;
+    @Inject
+    public SunshineRepository mRepository;
 
     public DetailActivityViewModel(SunshineRepository repository, Date date) {
         mRepository = repository;

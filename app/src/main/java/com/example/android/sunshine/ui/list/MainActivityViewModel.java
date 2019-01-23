@@ -24,12 +24,15 @@ import com.example.android.sunshine.data.database.ListWeatherEntry;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 /**
  * {@link ViewModel} for {@link MainActivity}
  */
 class MainActivityViewModel extends ViewModel {
 
-    private final SunshineRepository mRepository;
+    @Inject
+    public SunshineRepository mRepository;
     private final LiveData<List<ListWeatherEntry>> mForecast;
 
     public MainActivityViewModel(SunshineRepository repository) {

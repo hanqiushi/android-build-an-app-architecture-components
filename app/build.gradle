@@ -38,11 +38,12 @@ dependencies {
     annotationProcessor "android.arch.lifecycle:compiler:$arch_version"
     compile "android.arch.persistence.room:runtime:$arch_version"
     annotationProcessor "android.arch.persistence.room:compiler:$arch_version"
-
     // Instrumentation dependencies use androidTestCompile"
     // (as opposed to testCompile for local unit tests run in the JVM"
     androidTestCompile "junit:junit:$junit_version"
     androidTestCompile "com.android.support:support-annotations:$support_version"
     androidTestCompile "com.android.support.test:runner:$support_test_version"
     androidTestCompile "com.android.support.test:rules:$support_test_version"
+    implementation 'com.google.dagger:dagger:2.21'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.21'
 }
