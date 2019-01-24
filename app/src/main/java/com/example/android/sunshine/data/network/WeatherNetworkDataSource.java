@@ -30,9 +30,24 @@ import com.firebase.jobdispatcher.GooglePlayDriver;
 import com.firebase.jobdispatcher.Job;
 import com.firebase.jobdispatcher.Lifetime;
 import com.firebase.jobdispatcher.Trigger;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+
+import org.json.JSONException;
 
 import java.net.URL;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
+
+import io.reactivex.Observer;
+import io.reactivex.Scheduler;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Provides an API for doing all operations with the server data
@@ -58,10 +73,27 @@ public class WeatherNetworkDataSource {
     private final MutableLiveData<WeatherEntry[]> mDownloadedWeatherForecasts;
     private final AppExecutors mExecutors;
 
+    private Retrofit netRetrofit;
+    private WeatherRetrofit mWeatherRetrofit;
+
     public WeatherNetworkDataSource(Context context, AppExecutors executors) {
         mContext = context;
         mExecutors = executors;
         mDownloadedWeatherForecasts = new MutableLiveData<WeatherEntry[]>();
+
+        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+        OkHttpClient httpClient = new OkHttpClient.Builder().addInterceptor(logging).build();
+
+
+        netRetrofit = new Retrofit.Builder()
+                .baseUrl("https://andfun-weather.udacity.com/")
+                .client(httpClient)
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        mWeatherRetrofit = netRetrofit.create(WeatherRetrofit.class);
     }
 
     /**
@@ -148,6 +180,36 @@ public class WeatherNetworkDataSource {
      */
     void fetchWeather() {
         Log.d(LOG_TAG, "Fetch weather started");
+
+        //mExecutors.networkIO().execute(() -> {
+
+        /*    mWeatherRetrofit.getWeather("Mountain View, CA", NetworkUtils.format,
+                    NetworkUtils.units, Integer.toString(WeatherNetworkDataSource.NUM_DAYS))
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(Schedulers.io())
+                    .subscribe(new Observer<BaseResponse<List<WeatherData>>>() {
+                        @Override
+                        public void onSubscribe(Disposable d) {
+                            Log.d("qiushihan1", "onSubscribe called");
+                        }
+
+                        @Override
+                        public void onNext(BaseResponse<List<WeatherData>> value) {
+                            Log.d("qiushihan1", "" + value.getData().toString());
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            Log.d("qiushihan1", "onError called");
+                        }
+
+                        @Override
+                        public void onComplete() {
+                            Log.d("qiushihan1", "onComplete called");
+                        }
+                    });*/
+        //});
+
         mExecutors.networkIO().execute(() -> {
             try {
 

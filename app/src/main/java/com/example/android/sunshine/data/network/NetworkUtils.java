@@ -59,20 +59,20 @@ final class NetworkUtils {
      */
 
     /* The format we want our API to return */
-    private static final String format = "json";
+    public static final String format = "json";
     /* The units we want our API to return */
-    private static final String units = "metric";
+    public static final String units = "metric";
 
 
     /* The query parameter allows us to provide a location string to the API */
-    private static final String QUERY_PARAM = "q";
+    public static final String QUERY_PARAM = "q";
 
     /* The format parameter allows us to designate whether we want JSON or XML from our API */
-    private static final String FORMAT_PARAM = "mode";
+    public static final String FORMAT_PARAM = "mode";
     /* The units parameter allows us to designate whether we want metric units or imperial units */
-    private static final String UNITS_PARAM = "units";
+    public static final String UNITS_PARAM = "units";
     /* The days parameter allows us to designate how many days of weather data we want */
-    private static final String DAYS_PARAM = "cnt";
+    public static final String DAYS_PARAM = "cnt";
 
     /**
      * Retrieves the proper URL to query for the weather data.

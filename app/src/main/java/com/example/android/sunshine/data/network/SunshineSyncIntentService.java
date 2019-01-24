@@ -19,6 +19,7 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.util.Log;
 
+import com.example.android.sunshine.App;
 import com.example.android.sunshine.utilities.InjectorUtils;
 
 import javax.inject.Inject;
@@ -38,6 +39,7 @@ public class SunshineSyncIntentService extends IntentService {
 
     public SunshineSyncIntentService() {
         super("SunshineSyncIntentService");
+        App.getInstance().getComponent().inject(this);
     }
 
     @Override
